@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<launch>
+
+   <include file="$(find rosserial_python)/launch/arduino.launch" />
+   
+   <include file="$(find saya_hospitality_states)/launch/sayabot_bring_up.launch" />
+
+
+</launch>

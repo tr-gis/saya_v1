@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+  <name>saya_hospitality_states</name>
+  <version>0.0.0</version>
+  <description>The saya_hospitality_states package</description>
+
+   <maintainer email="intern_niranjan@sayabot.com">niranjan</maintainer>
+  <license>BSD</license>
+  <url type="website">http://sayabot.com/</url>
+  <author email="intern_niranjan@sayabot.com">M J Niranjan</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>roslib</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>smach</build_depend>
+  <build_depend>smach_ros</build_depend>
+  <run_depend>actionlib</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>roslib</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>smach</run_depend>
+  <run_depend>smach_ros</run_depend>
+
+  <build_depend>saya_hospitality_voice</build_depend>
+  <run_depend>saya_hospitality_voice</run_depend>
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+<rosdoc config="rosdoc.yaml" />
+  </export>
+</package>

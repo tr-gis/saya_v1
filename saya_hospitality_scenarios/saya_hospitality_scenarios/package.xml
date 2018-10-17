@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <name>saya_hospitality_scenarios</name>
+  <version>0.0.1</version>
+  <description>ROS metapackages for saya_hospitality_scenarios package.</description>
+  <license>BSD</license>
+
+  <maintainer email="aditya@asimovrobotics.com">Aditya Vijaychandra</maintainer>
+  <author email="aditya@asimovrobotics.com">Aditya Vijaychandra</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

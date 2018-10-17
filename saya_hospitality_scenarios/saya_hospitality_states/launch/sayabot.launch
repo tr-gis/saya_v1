@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+	
+	 
+	
+	 <node pkg="saya_hospitality_states" type="roba.py" name="roba"/>
+	
+	<include file="$(find saya_hospitality_states)/launch/shutdown.launch" />
+	
+	
+	
+	 <include file="$(find hdf_base)/launch/hdf_base.launch" />	
+	 
+		
+	 
+	
+	
+
+</launch>

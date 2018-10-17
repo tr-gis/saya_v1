@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<node pkg="saya_hospitality_states" type="shutdown.py" name="shut_down"/>	
+	
+	 <!--node pkg="saya_hospitality_states" type="roba.py" name="roba"/-->
+</launch>

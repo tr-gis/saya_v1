@@ -1,0 +1,24 @@
+actions: []
+authors: M J Niranjan <intern_niranjan@sayabot.com>, S Gokul Narayanan <intern_gokul@sayabot.com>
+brief: ''
+bugtracker: ''
+depends:
+- catkin
+- roscpp
+- std_msgs
+- actionlib
+- sensor_msgs
+- image_transport
+- rospy
+- saya_hospitality_perception_msgs
+- message_generation
+- cv_bridge
+- actionlib_msgs
+description: The saya_hospitality_face_tracking package
+license: BSD, BSD
+maintainers: niranjan <intern_niranjan@sayabot.com>, niranjan <intern_niranjan@sayabot.com>
+msgs: []
+package_type: package
+repo_url: ''
+srvs: []
+url: http://sayabot.com/

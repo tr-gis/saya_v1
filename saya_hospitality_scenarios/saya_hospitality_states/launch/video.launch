@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+	
+	 
+	
+	 <node pkg="saya_hospitality_states" type="video.py" name="video"/>
+	
+	 <node pkg="rosbag" type="record" name="rating_bag"  args="-O rating_bag /ui_rating" />	
+	 
+	
+	
+
+</launch>

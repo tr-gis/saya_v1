@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!-- Load robot description-->
+    <include file="$(find hdf_urdf)/launch/description.launch"/>
+    
+    
+	<!-- hdfc harware driver -->
+    <node pkg="hdf_base" type="hdf_node" name="hdf_node" output="screen">
+     </node>
+
+    
+    <!-- Diff_drive_controller parameters --> 
+   <include file="$(find diff_drive_controller)/launch/diff_drive_common.launch"/> 
+   
+   
+   
+   <include file="$(find hdf_nav)/launch/hokuyo.launch" />
+   
+    <include file="$(find laser_filters)/examples/range_filter_example.launch" />
+   
+   <include file="$(find hdf_nav)/launch/localization.launch" />
+   
+   <include file="$(find hdf_nav)/launch/move_base.launch" />
+   
+   <!--include file="$(find saya_hospitality_states)/launch/sayabot.launch"/-->
+	 
+	 <!--node pkg="turtlebot_teleop" type="turtle_teleop_key" name="husky_teleop" output="screen">
+      <remap from="turtlebot_telop_keyboard/cmd_vel" to="/diffbot_controller/cmd_vel"/>
+	</node!-->
+
+    
+</launch>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<launch>
+
+   <!--include file="$(find rosserial_python)/launch/arduino.launch" /-->
+   
+   
+   <include file="$(find eva_arm_controller)/launch/eva_arm_controller.launch" />
+   
+   <include file="$(find saya_hospitality_audio)/launch/audio.launch" />
+
+   <include file="$(find saya_hospitality_face_tracking)/launch/face_tracking_server.launch" />
+   
+   <include file="$(find saya_hospitality_states)/launch/sayabot.launch" />
+   
+  
+   
+   <!--include file="$(find hdf_base)/launch/hdf_base.launch" /-->
+   
+ 
+   
+   
+   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" /> 
+   
+   <!--node name="smach_viewer" pkg="smach_viewer" type="smach_viewer.py"/-->
+</launch>
+
+
+
+

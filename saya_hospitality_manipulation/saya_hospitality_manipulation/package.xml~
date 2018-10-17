@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>saya_hospitality_manipulation</name>
+  <version>0.0.1</version>
+  <description>ROS metapackages for saya_hospitality_manipulation package.</description>
+  <license>BSD</license>
+
+  <author email="intern_niranjan@sayabot.com">Niranjan</author>
+  <maintainer email="intern_niranjan@sayabot.com">Niranjan</maintainer>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

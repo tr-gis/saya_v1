@@ -1,0 +1,266 @@
+	<!doctype HTML>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>HDFC</title>
+	<meta name="description" content="HDFC Website">
+	<meta name="author" content="hdfc.com">
+	<meta name="viewport" content="width=device-width initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">	
+	<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="assets/js/roslib.min.js"></script>
+	
+</head>
+<body class="background-image" onload="scanFace();">
+	<header>
+		<p class="post-login" style="display:none">Hi, I'm IRA - Robot For Banking Assistance</p>
+		<ul>
+			<li>
+				<p id="time"></p>
+			</li>
+			<!-- <li>
+				<i class="icon-battery hdfc-sprite empty"></i>
+				<i class="icon-battery hdfc-sprite half"></i>
+				<i class="icon-battery hdfc-sprite full"></i>
+				<input class="icon-power power-sprite" type="button" onmousedown="func()" onmouseup="revert()">
+			</li> -->
+		</ul>	
+	</header>
+	<main>
+		
+		<div class="class-allpage container-index">
+			<div class="container-logo-caption after-face-detect" style="display: none">
+				<h2>Hi I'm</h2>
+				<h1>IRA</h1>
+				<h3>Robot For Banking Assistance</h3>
+				<span class="hr-line"></span>
+				<p>Welcome to</p>
+				<div class="hdfc-logo hdfc-sprite"></div>
+			</div>
+			
+			<div class="container-logo-caption before-face-detect">
+				<p>Welcome to</p>
+				<div class="hdfc-logo hdfc-sprite"></div>
+				<span class="hr-line"></span>
+				<h2></h2>
+			</div>	
+		</div>
+
+                <div class="class-allpage container-dummy container-logo-caption" style="display:none">
+		
+				<div class="hdfc-logo hdfc-sprite"></div>
+				<span class="hr-line"></span>
+				<h2></h2>
+			</div>
+				
+
+		</div>
+
+		<div class="class-allpage container-choice" style="display:none">
+			<h2>Tap on the Option of your Choice</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<div class="column-two" id="choice_cash_withdrawal">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite one"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Cash Withdrawal</p>
+					</div>
+				</div>
+				<div class="column-two" id="choice_cash_deposit">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite two"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Cash Deposit</p>
+					</div>
+				</div>
+				<div class="column-two" id="choice_demat">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite three"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Demat Services</p>
+					</div>
+				</div>
+				<div class="column-two" id="choice_forex">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite four"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Foreign Exchange</p>
+					</div>
+				</div>
+				<div class="column-two" id="choice_fixed_deposit">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite five"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Fixed Deposit</p>
+					</div>
+				</div>
+				<div class="column-two" id="choice_others">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite six"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Loans</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="class-allpage container-cash_deposit container-layout" style="display:none">
+			
+			
+		
+				<div class="hdfc-logo hdfc-sprite"></div>
+			
+		
+				
+		</div>
+
+		<div class="class-allpage container-cash_wdl container-layout" style="display:none">
+			<h2>Branch Layout</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<!-- <div class="your-here">
+					<h2>You are<br>
+					Here</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div> -->
+				<div class="text-deposite right">
+					<h2>Cash<br>
+					Deposit</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div>
+				<div class="layout cashdeposite"></div>
+			</div>
+		</div>
+
+		<div class="class-allpage container-demat container-layout" style="display:none">
+			<div class="hdfc-logo hdfc-sprite"></div>
+				<span class="hr-line"></span>
+				<h2></h2>
+		</div>
+
+		<div class="class-allpage container-error" style="display:none">
+			<div class="error-smiley hdfc-sprite"></div>
+			<h2>Temporarily Out Of Service!</h2>
+			<p>Apologies For Inconvenience Caused!</p>
+		</div>
+
+		<div class="class-allpage container-fixed_deposit container-layout" style="display:none">
+			<h2>Branch Layout</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<!-- <div class="your-here">
+					<h2>You are<br>
+					Here</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div> -->
+				<div class="text-fixed-deposite top">
+					<i class="icon hdfc-sprite"></i>
+					<h2>Fixed<br>
+					Deposit</h2>
+				</div>
+				<div class="layout fixeddeposite"></div>
+			</div>
+		</div>
+
+		<div class="class-allpage container-foreignexchange container-layout" style="display:none">
+			<h2>Branch Layout</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<!-- <div class="your-here">
+					<h2>You are<br>
+					Here</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div> -->
+				<div class="text-foriegn right">
+					<h2>Foreign<br>
+					Exchange</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div>
+				<div class="layout foriegn"></div>
+			</div>
+		</div>
+
+		<div class="class-allpage container-battery-low" style="display:none">
+			<div class="battery-smiley hdfc-sprite"></div>
+			<h2>Attention!</h2>
+			<p>Battery is low and needs immediate charging!</p>
+		</div>
+
+		<div class="class-allpage container-other container-layout" style="display:none">
+			<h2>Branch Layout</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<!-- <div class="your-here">
+					<h2>You are<br>
+					Here</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div> -->
+				<div class="text-other bottom">
+					<h2>Others</h2>
+					<i class="icon hdfc-sprite"></i>
+				</div>
+				<div class="layout other"></div>
+			</div>
+		</div>
+	
+		<div class="class-allpage container-rating" style="display:none">
+			<h2>Please Rate My Service</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<div class="rating">
+				    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+				    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+				    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+				    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+				    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="class-allpage container-reached" style="display:none">
+			<h2>TAP ON THE OPTION OF YOUR CHOICE</h2>
+			<span class="hr-line"></span>
+			<div class="content">
+				<div class="column-two" id="repeat">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite one"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Repeat</p>
+					</div>
+				</div>
+				<div class="column-two" id="takemethere">
+					<i class="icon-vertical-line hdfc-sprite"></i>
+					<i class="icon-options hdfc-sprite two"></i>
+					<div class="option-bg hdfc-sprite">
+						<p>Take Me There</p>
+					</div>
+				</div>
+				<div class="column-one" id="thankyou">
+					<div class="column-one-content">
+						<i class="icon-vertical-line hdfc-sprite"></i>
+						<i class="icon-options hdfc-sprite three"></i>
+						<div class="option-bg hdfc-sprite">
+							<p>Thank You</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="class-allpage container-thank" style="display:none">
+			<div class="image-border hdfc-sprite">
+				<!--h2 class="cap">Thank You For </h2><h2>Banking With Us</h2-->
+			</div>
+		</div>
+
+	</main>
+	<footer>
+		<div class="post-login icon-hdfc hdfc-sprite" style="display:none"></div>
+		<!-- <p>Powered by<i class="icon-saya hdfc-sprite"></i></p> -->
+		<p>Powered by<input class="icon-saya hdfc-sprite" type="button" onmousedown="func()" onmouseup="revert()"></p>
+	</footer>
+<script type="text/javascript" src="assets/js/script.js"></script>
+</body>
+</html>

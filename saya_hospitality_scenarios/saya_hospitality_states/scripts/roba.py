@@ -1,0 +1,290 @@
+#!/usr/bin/env python
+
+# Software License Agreement (BSD License)
+#
+# Copyright (c) 2016, Sayabot Systems Pvt. Ltd.
+#   All rights reserved.
+# 
+#   Redistribution and use in source and binary forms, with or without
+#   modification, are permitted provided that the following conditions
+#   are met:
+# 
+#    * Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#    * Redistributions in binary form must reproduce the above
+#      copyright notice, this list of conditions and the following
+#      disclaimer in the documentation and/or other materials provided
+#      with the distribution.
+#    * Neither the name of the CU Boulder nor the names of its
+#      contributors may be used to endorse or promote products derived
+#      from this software without specific prior written permission.
+# 
+#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+#   FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+#   COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+#   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+#   BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+#   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+#   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+#   LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+#   ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+#   POSSIBILITY OF SUCH DAMAGE
+#
+
+# Author: Aditya Vijayachandra(aditya@asimovrobotics.com), Gokul Narayanan(gokul@asimovrobotics.com)
+
+#  Description: This code contains the SMACH State Machine used in the Decision Tree of the Robot
+
+
+import roslib
+import rospy
+import smach
+import smach_ros
+import os, sys 
+from std_msgs.msg import Bool
+ 
+from smach import State
+
+from sound_play.msg import SoundRequest
+from sound_play.libsoundplay import SoundClient
+
+
+
+import states.face_detection_state as fds  # importing face_detection_state.py file from /src/states directory and local name for the file is given as fds.
+
+import states.manipulation1 as ms1
+import states.manipulation2 as ms2
+import states.manipulation3 as ms3
+import states.manipulation4 as ms4
+import states.manipulation5 as ms5
+import states.manipulation6 as ms6
+import states.manipulation7 as ms7
+
+import states.speech_state1 as ss1 
+import states.speech_state2 as ss2
+import states.speech_state3 as ss3
+import states.speech_state4 as ss4
+import states.speech_state5 as ss5
+import states.speech_state6 as ss6
+import states.speech_state7 as ss7
+import states.speech_state8 as ss8
+import states.speech_state9 as ss9
+
+import states.map1 as mp1
+import states.map2 as mp2
+import states.map3 as mp3
+
+import states.battery as bt   # For battery
+
+import states.ui1 as ui1 # Utility to be explored, New states may be added.
+import states.ui2 as ui2
+import states.ui3 as ui3
+import states.ui4 as ui4
+
+import states.nav1 as nt  #For the 6 screen buttons
+
+import states.nav2 as nt1 #For returning to home position
+
+import states.nav3 as nt2 #For returning to home position
+
+def main():
+    rospy.init_node('roba_state_machine') # initiating node
+    mover=nt.GoalMaker() # Initialise object for calling navigation state nav1
+    mover1=nt1.GoalMaker() # Initialise object for calling navigation state nav2 
+    mover2=nt2.GoalMaker() # Initialise object for calling navigation state nav3
+    # Create a SMACH state machine with outcomes
+    sm_top = smach.StateMachine(outcomes=['Stop'])
+
+
+    
+# creating the SMACH container with defined states
+    with sm_top:
+        # Add states to the container
+
+	smach.StateMachine.add('Battery', bt.battery(),
+				transitions={'safe':'Face_Detection',
+						'unsafe':'Stop'})				 	
+        
+
+	smach.StateMachine.add('Face_Detection', fds.Face_Detection(), # adding FACE_Detection state from face_detection_state.py
+                               transitions={'face_detected':'Detected', 
+                                            'No_face_detected':'Not_Detected'}) # mapping the outcomes of this state to other states
+	smach.StateMachine.add('Detected', fds.Detected(), 
+                               transitions={'Complete':'CON'}) # Mapping the Detected state outcome to First Arm Manipulation state
+        
+        smach.StateMachine.add('Not_Detected', fds.Not_Detected(), 
+                               transitions={'Redoing':'Battery'}) # Mapping Redoing outcome from Not_Detected state to the Mojo Music State 
+    	
+	
+
+	sm_con = smach.Concurrence(outcomes=['Waiting','Done'],	##### Default outcome Waiting to be checked( Whether it can be removed and the concurrent state made a 
+                                   default_outcome='Waiting',                                                          #####  single outcome state #####
+                                   outcome_map={'Done': 
+                                       { 'Arm_Manipulation1':'Executed',
+                                         'Speech1':'completed',
+					'ui1':'complete'}})
+        with sm_con:
+		smach.Concurrence.add('Arm_Manipulation1', ms1.Arm_Manipulation1())
+		smach.Concurrence.add('Speech1', ss1.Speech1())
+		smach.Concurrence.add('ui1', ui1.screen1())
+
+        smach.StateMachine.add('CON', sm_con,
+                                 transitions={'Waiting':'Stop',
+                                              'Done':'CON1'})
+
+	sm_con1=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'Arm_Manipulation2':'Executed',
+						'Speech2':'completed'}})
+					
+	with sm_con1:
+				
+		smach.Concurrence.add('Arm_Manipulation2', ms2.Arm_Manipulation2())
+		smach.Concurrence.add('Speech2', ss2.Speech2())
+	
+	smach.StateMachine.add('CON1', sm_con1,
+				transitions={'Waiting':'Stop',
+					     'Done':'map1'})
+
+	smach.StateMachine.add('map1',mp1.Map1(),					# Accepts button press from ui_nav and plays audio accordingly
+				transitions={'complete':'CON8',
+					     'incomplete':'Battery'})
+
+	
+	sm_con4=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'Speech4':'completed',
+						'Arm_Manipulation5':'Executed'}})
+
+	sm_con8=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'Speech3':'completed',
+						'Arm_Manipulation3':'Executed'}})
+
+	with sm_con8:
+				
+		smach.Concurrence.add('Speech3', ss3.Speech3())
+		smach.Concurrence.add('Arm_Manipulation3', ms3.Arm_Manipulation3())   # Arm manipulation for rate me 
+	
+	smach.StateMachine.add('CON8', sm_con8,
+                                 transitions={'Waiting':'Stop',
+                                              'Done':'Arm_Manipulation4'})
+
+	
+
+	smach.StateMachine.add('Arm_Manipulation4',ms4.Arm_Manipulation4(),		# Arm manipulation for the Directions
+				transitions={'Executed':'map2'})
+	
+	smach.StateMachine.add('map2',mp2.Map2(),
+				transitions={'complete_repeat':'map1',         # Possible issue with Repeat button publishing to ui_nav and ui_options simultaneously 
+				'complete_guide':'CON6',
+				'complete_thank':'CON4',
+				'incomplete':'Battery'})
+
+	sm_con4=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'Speech4':'completed',
+						'Arm_Manipulation5':'Executed'}})
+
+	with sm_con4:
+				
+		smach.Concurrence.add('Speech4', ss4.Speech4())
+		smach.Concurrence.add('Arm_Manipulation5', ms5.Arm_Manipulation5())   # Arm manipulation for rate me 
+	
+	smach.StateMachine.add('CON4', sm_con4,
+                                 transitions={'Waiting':'Stop',
+                                              'Done':'Speech7'})
+
+	smach.StateMachine.add('Speech7',ss7.Speech7(),
+				transitions={'completed':'Battery'})	
+
+	sm_con6=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'Speech5':'completed',
+						'Speech8':'completed',
+						'Arm_Manipulation7':'Executed'}})
+
+	with sm_con6:
+				
+		smach.Concurrence.add('Speech5', ss5.Speech5())
+		smach.Concurrence.add('Speech8', ss8.Speech8())
+		smach.Concurrence.add('Arm_Manipulation7', ms7.Arm_Manipulation7())
+	
+	smach.StateMachine.add('CON6', sm_con6,
+                                 transitions={'Waiting':'Stop',
+                                              'Done':'nav'})			
+	
+
+	smach.StateMachine.add('nav', nt.nav(mover),
+				transitions={'goal_reached':'CON2','goal_not_reached':'CON3'})
+	
+
+
+	sm_con2=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'ui2':'complete',
+						'Speech6':'completed'}})
+	
+	with sm_con2:
+
+		smach.Concurrence.add('ui2',ui2.screen2())
+		smach.Concurrence.add('Speech6',ss6.Speech6())
+
+
+	smach.StateMachine.add('CON2', sm_con2,
+				transitions={'Waiting':'Stop',
+					     'Done':'Arm_Manipulation6'})
+	smach.StateMachine.add('Arm_Manipulation6',ms6.Arm_Manipulation6(),		# Arm manipulation for rate me 26AUG
+				transitions={'Executed':'Speech9',
+					     'Not_Executed':'Speech9'})	
+	
+
+
+	smach.StateMachine.add('Speech9',ss9.Speech9(),
+				transitions={'completed':'nav3'})
+	
+
+	
+	sm_con3=smach.Concurrence(outcomes=['Waiting','Done'],
+						default_outcome='Waiting',
+						outcome_map={'Done':
+						{'ui3':'complete',
+						'nav2':'goal_reached'}})
+	
+	with sm_con3:
+
+		smach.Concurrence.add('ui3',ui3.screen3())
+		smach.Concurrence.add('nav2',nt1.nav2(mover1))
+
+
+	smach.StateMachine.add('CON3', sm_con3,
+				transitions={'Waiting':'Stop',
+					     'Done':'ui4'})
+	
+	smach.StateMachine.add('nav3', nt2.nav3(mover2),
+				transitions={'goal_reached':'Battery'})
+
+	smach.StateMachine.add('ui4', ui4.screen4(),
+				transitions={'complete':'Battery'})
+
+	
+
+    sys = smach_ros.IntrospectionServer('sayabot_hospitality', sm_top, '/Sayabot_Hospitality')
+    sys.start()
+
+    outcome = sm_top.execute()
+
+    sys.stop()
+
+if __name__ == '__main__':
+    main()
+    
+

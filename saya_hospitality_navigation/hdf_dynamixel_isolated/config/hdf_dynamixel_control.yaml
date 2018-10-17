@@ -1,0 +1,26 @@
+front_left_wheel_joint:
+    controller:
+        package: dynamixel_controllers
+        module: joint_torque_controller
+        type: JointTorqueController
+    joint_name: front_left_wheel_joint
+    joint_speed: 1.13
+    motor:
+        id: 11
+        init: 0
+        min: 0
+        max: 4095
+
+front_right_wheel_joint:
+    controller:
+        package: dynamixel_controllers
+        module: joint_torque_controller
+        type: JointTorqueController
+    joint_name: front_right_wheel_joint
+    joint_speed: 1.13
+    motor:
+        id: 12
+        init: 0
+        min: 0
+        max: 4095
+

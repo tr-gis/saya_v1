@@ -1,0 +1,88 @@
+# saya_hospitality_states #
+
+ This package contains the code for SMACH staes for sayabot robot.
+
+## Requirements ##
+
+* __smach_ros__ package
+
+The smach_ros package contains extensions for the SMACH library to integrate it tightly with ROS.
+To know more click this [link](http://wiki.ros.org/smach_ros) 
+
+Use following code to install:
+
+    sudo apt-get install ros-indigo-smach-ros
+
+* __actionlib__ package
+
+The actionlib stack provides a standardized interface for interfacing with preemptable tasks
+To know more click this [link](http://wiki.ros.org/actionlib) 
+
+Use following code to install:
+
+    sudo apt-get install ros-indigo-actionlib
+
+* __smach_viewer__ package
+
+The smach viewer is a GUI that shows the state of hierarchical SMACH state machines.
+To know more click this [link](http://wiki.ros.org/smach_viewer) 
+
+Use following code to install:
+
+    sudo apt-get install ros-indigo-smach-viewer
+
+To run use following code:
+
+    rosrun smach_viewer smach_viewer.py 
+
+__NOTE__: smach_viewer.py may not work in ROS Indigo. to make it work we need to make some change in __/opt/ros/indigo/lib/python2.7/dist-packages/xdot/xdot.py__ file.
+
+Use following code to make a change in a file.
+
+    $ cd /opt/ros/indigo/lib/python2.7/dist-packages/xdot/
+    $ sudo gedit xdot.py
+
+Now __xdot.py__ file will be opened in gedit editor.
+Goto line number 480 and change the code as following:
+
+    return int(self.read_code()) ----> return int(float(self.read_code())) 
+
+After making changes close the file and again run the smach_viewer.py
+Now smach_viewer.py will run properly.
+
+## SMACH States ##
+
+SMACH states are defined in the directory called states in src folder in this package.
+
+path to directory:
+
+    ~/sayatbot_ws/src/saya_hospitality_states/src/states
+
+Example files:
+__arm_maipulation_state.py__
+__face_detection_state.py__
+__speech_state.py__ 
+
+
+After defining the states, they can be imported to SMACH container program that is in scripts directory.Steps to do that are given in Instruction file in this package.
+
+## SMACH  Container Program ##
+
+SMACH container program is the program that has the flow of control over the SMACH States. This program is saved in the scripts directory.
+
+file name: __sayabot_test.py__ 
+
+## Running SMACH ##
+
+To start SMACH we should run the SMACH Container Program.
+
+Use following code to run SMACH file:
+
+    rosrun saya_hospitality_states roba.py
+
+or use the launch file to run the SMACH node.
+
+    roslaunch saya_hospitality_states sayabot.launch
+ 
+
+

@@ -1,0 +1,11 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+    <rosparam file="$(find hdf_dynamixel)/config/hdf_dynamixel_control.yaml" command="load"/>
+    <node name="tilt_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --port pan_tilt_port
+		 front_left_wheel_joint
+		 front_right_wheel_joint"
+		
+          output="screen"/>
+</launch>

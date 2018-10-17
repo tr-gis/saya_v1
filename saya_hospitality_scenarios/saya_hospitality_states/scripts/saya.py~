@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+
+import roslib
+import rospy
+import smach
+import smach_ros
+import os, sys 
+from std_msgs.msg import Bool
+ 
+from sound_play.msg import SoundRequest
+from sound_play.libsoundplay import SoundClient
+
+
+import states.face_detection_state as fds  # importing face_detection_state.py file from /src/states directory and local name for the file is given as fds.
+
+import states.manipulation1 as ms1
+import states.manipulation2 as ms2
+import states.manipulation3 as ms3
+import states.manipulation4 as ms4
+
+import states.speech_state1 as ss1 
+import states.speech_state2 as ss2
+import states.speech_state3 as ss3
+import states.speech_state4 as ss4
+import states.speech_state5 as ss5
+import states.speech_state6 as ss6
+import states.speech_state7 as ss7
+
+import states.speech_state as ss
+
+import states.nav_test as nt
+
+
+
+def main():
+    rospy.init_node('smach_example_state_machine') # initiating node
+       
+    # Create a SMACH state machine with outcomes
+    sm_top = smach.StateMachine(outcomes=['Stop'])
+
+
+    
+# creating the SMACH container with defined states
+    with sm_top:
+        # Add states to the container
+
+	
+        smach.StateMachine.add('Face_Detection', fds.Face_Detection(), #adding FACE_Detection state from face_detection_state.py
+                               transitions={'face_detected':'Detected', 
+                                            'No_face_detected':'Not_Detected'}) # mapping the outcomes of this state to other states
+	smach.StateMachine.add('Detected', fds.Detected(), 
+                               transitions={'Complete':'CON'}) # mapping the Arm Manipulation outcome from Detected state to the Arm_Manipulation State
+        
+        smach.StateMachine.add('Not_Detected', fds.Not_Detected(), 
+                               transitions={'Redoing':'Face_Detection'}) # mapping redoing outcome from Not_Detected state to the Face _Detection state    
+    
+	sm_con = smach.Concurrence(outcomes=['Redoing','Done'],
+                                   default_outcome='Redoing',
+                                   outcome_map={'Done':
+                                       { 'Arm_Manipulation1':'Executed',
+                                         'Speech1':'completed'}})
+        with sm_con:
+             smach.Concurrence.add('Arm_Manipulation1', ms1.Arm_Manipulation1())
+             smach.Concurrence.add('Speech1', ss1.Speech1())
+
+        smach.StateMachine.add('CON', sm_con,
+                                 transitions={'Redoing':'Stop',
+                                              'Done':'Stop'})
+
+    sys = smach_ros.IntrospectionServer('sayabot_hospitality', sm_top, '/Sayabot_Hospitality')
+    sys.start()
+
+    outcome = sm_top.execute()
+
+    sys.stop()
+
+if __name__ == '__main__':
+    main()
+    

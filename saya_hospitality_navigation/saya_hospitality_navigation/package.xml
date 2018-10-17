@@ -1,0 +1,32 @@
+<package>
+  <name>saya_hospitality_navigation</name>
+  <version>1.2.4</version>
+  <description>
+    This package provides all the modules for navigation.
+  </description>
+  <maintainer email="intern_gokuk@sayabot.com">Gokul</maintainer>
+  <license>BSD</license>
+
+  
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  
+  <run_depend>diff_drive_controller</run_depend>
+  <run_depend>hdf_base</run_depend>
+  <run_depend>hdf_bringup</run_depend>
+  <run_depend>hdf_control</run_depend>
+  <run_depend>hdf_dynamixel</run_depend>
+  <run_depend>hdf_model</run_depend>
+  <run_depend>hdf_nav</run_depend>
+  <run_depend>hdf_urdf</run_depend>
+   <run_depend>hdf_gazebo</run_depend>
+  <run_depend>hokuyo_nodel</run_depend>
+  <run_depend>turtlebot_teleop</run_depend>
+  <run_depend>laser_filters</run_depend>
+
+<export>
+   <metapackage />
+ </export>
+
+</package>

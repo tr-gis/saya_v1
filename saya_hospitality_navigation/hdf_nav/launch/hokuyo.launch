@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="laser_driver" pkg="hokuyo_node" type="hokuyo_node">
+   <param name="frame_id" value="laser_link" />
+   
+  
+   <remap from="/scan_unfiltered" to="/base_scan"/>
+   </node>
+</launch>

@@ -1,0 +1,20 @@
+import roslib
+import rospy
+import smach
+import smach_ros
+import os, sys
+from std_msgs.msg import Bool
+from sound_play.msg import SoundRequest
+
+from sound_play.libsoundplay import SoundClient
+
+
+class Arm_Manipulation4(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, outcomes=['Executed']) # Outcome
+	
+    def execute(self, userdata):
+	
+       	os.system("roslaunch eva_arm_controller play4.launch") # launches the play back file
+	return 'Executed'
+	
